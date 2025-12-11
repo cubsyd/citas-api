@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cita;
 use Illuminate\Http\Request;
 
-class citaController extends Controller
+class CitaController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar todas las citas.
      */
     public function index()
     {
@@ -16,17 +17,17 @@ class citaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Crear una nueva cita.
      */
     public function store(Request $request)
     {
         $data = $request->validate([
             'nombre_paciente' => 'required|string|max:255',
-            'nombre_medico' => 'required|string|max:255',
-            'date' => 'required|date',
-            'hora_cita' => 'required|string',
-            'motivo' => 'nullable|string',
-            'estado' => 'required|in:pendiente,confirmada,cancelada',
+            'nombre_medico'   => 'required|string|max:255',
+            'fecha'           => 'required|date',      // antes tenías "date"
+            'hora_cita'       => 'required|string',
+            'motivo'          => 'nullable|string',
+            'estado'          => 'required|in:pendiente,confirmada,cancelada',
         ]);
 
         $cita = Cita::create($data);
@@ -35,25 +36,25 @@ class citaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar una cita específica.
      */
-    public function show(string $id)
+    public function show(Cita $cita)
     {
         return $cita;
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar una cita.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Cita $cita)
     {
         $data = $request->validate([
             'nombre_paciente' => 'sometimes|required|string|max:255',
-            'nombre_medico'  => 'sometimes|required|string|max:255',
-            'fecha'         => 'sometimes|required|date',
-            'hora_cita'         => 'sometimes|required|string',
-            'motivo'       => 'nullable|string',
-            'estado'       => 'sometimes|required|in:pendiente,realizada,cancelada',
+            'nombre_medico'   => 'sometimes|required|string|max:255',
+            'fecha'           => 'sometimes|required|date',
+            'hora_cita'       => 'sometimes|required|string',
+            'motivo'          => 'nullable|string',
+            'estado'          => 'sometimes|required|in:pendiente,confirmada,cancelada',
         ]);
 
         $cita->update($data);
@@ -62,13 +63,13 @@ class citaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar una cita.
      */
-    public function destroy(string $id)
+    public function destroy(Cita $cita)
     {
         $cita->delete();
 
-        return reponse()->json([
+        return response()->json([
             'message' => 'Cita eliminada correctamente',
         ]);
     }

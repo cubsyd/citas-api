@@ -16,6 +16,6 @@ class Cita extends Model
     ];
 
     protected $casts = [
-        'fecha' => 'fecha',
+        'fecha' => 'date',
     ];
 }
